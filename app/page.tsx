@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { Rocket, Zap, Shield, ArrowRight, LogIn } from "lucide-react";
+import { Camera, ImagePlus, Lock, CloudUpload, ArrowRight, LogIn } from "lucide-react";
 
 export default function Home() {
   return (
@@ -18,26 +17,26 @@ export default function Home() {
 
       <main className="relative flex w-full max-w-5xl flex-col items-center gap-12 px-6 py-20 text-center">
         {/* Subtle Glows */}
-        <div className="absolute -top-40 -z-10 h-[500px] w-[500px] rounded-full bg-indigo-600/20 blur-[120px]" />
+        <div className="absolute -top-40 -z-10 h-[500px] w-[500px] rounded-full bg-pink-600/20 blur-[120px]" />
         
         <div className="flex flex-col items-center gap-4">
-          <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-indigo-300 backdrop-blur-md">
-            <span className="mr-2 flex h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
-            Project Live: tuyor-nextapp
+          <div className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-pink-300 backdrop-blur-md">
+            <span className="mr-2 flex h-2 w-2 rounded-full bg-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.8)]" />
+            Your Personal Photo Space
           </div>
           <h1 className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-6xl font-bold tracking-tight text-transparent sm:text-7xl">
-            Next.js Mastery
+            OnlineWeb Private Gallery
           </h1>
           <p className="max-w-2xl text-lg text-zinc-300 drop-shadow-lg sm:text-xl">
-            Enhanced Next.js project with Landing Page, Authentication, and GitHub integration. Built for performance and aesthetics.
+            Upload, organize, and view your favorite photos in one beautiful place. Your personal gallery, always ready.
           </p>
         </div>
 
         <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { title: "Landing Page", desc: "Premium interface with dynamic background and animations.", Icon: Rocket, color: "text-blue-400" },
-            { title: "Auth Flow", desc: "Secure Login and Signup pages with input validation.", Icon: Shield, color: "text-indigo-400" },
-            { title: "Git Mastery", desc: "Fully tracked and pushed to GitHub for collaboration.", Icon: Zap, color: "text-yellow-400" },
+            { title: "Photo Upload", desc: "Drag & drop or browse to upload your photos instantly.", Icon: ImagePlus, color: "text-pink-400" },
+            { title: "Secure Access", desc: "Login to your personal gallery with protected authentication.", Icon: Lock, color: "text-indigo-400" },
+            { title: "Instant Storage", desc: "Photos saved locally and available anytime you need them.", Icon: CloudUpload, color: "text-cyan-400" },
           ].map((item, i) => (
             <div key={i} className="group relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.05] p-8 text-left transition-all hover:bg-white/[0.1] backdrop-blur-md">
               <item.Icon className={`mb-4 h-8 w-8 ${item.color}`} />
@@ -64,7 +63,7 @@ export default function Home() {
       </main>
 
       <footer className="w-full border-t border-white/5 py-8 text-center text-sm text-zinc-500 backdrop-blur-md">
-        &copy; {new Date().getFullYear()} tuyor-nextapp. Built by joshpups.
+        &copy; {new Date().getFullYear()} OnlineWeb Private Gallery. Built by joshpups.
       </footer>
     </div>
   );

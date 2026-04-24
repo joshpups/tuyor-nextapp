@@ -1,15 +1,63 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BarChart3, CheckSquare, Trophy, LogOut, Activity, ArrowLeft } from "lucide-react";
+import { ImageIcon, HardDrive, Clock, LogOut } from "lucide-react";
+import PhotoGallery from "./PhotoGallery";
+
+const STORAGE_KEY = "tuyor_gallery_photos";
+
+interface StoredPhoto {
+  id: string;
+  dataUrl: string;
+  name: string;
+  uploadedAt: string;
+}
+
+function getPhotoStats() {
+  if (typeof window === "undefined") return { count: 0, sizeKB: 0, latest: "" };
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const photos: StoredPhoto[] = raw ? JSON.parse(raw) : [];
+    const sizeBytes = new Blob([raw || ""]).size;
+    const sizeKB = Math.round(sizeBytes / 1024);
+    const latest = photos.length > 0
+      ? new Date(photos[0].uploadedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      : "—";
+    return { count: photos.length, sizeKB, latest };
+  } catch {
+    return { count: 0, sizeKB: 0, latest: "—" };
+  }
+}
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [stats, setStats] = useState({ count: 0, sizeKB: 0, latest: "—" });
+
+  useEffect(() => {
+    setStats(getPhotoStats());
+
+    // Listen for storage changes to update stats in real-time
+    const handleStorage = () => setStats(getPhotoStats());
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
+  // Re-calculate stats when gallery changes
+  const handleGalleryChange = () => {
+    setStats(getPhotoStats());
+  };
 
   const handleLogout = () => {
     router.push("/");
   };
+
+  const statCards = [
+    { title: "Total Photos", value: stats.count.toString(), Icon: ImageIcon, color: "text-pink-400", dot: "bg-pink-500" },
+    { title: "Storage Used", value: stats.sizeKB < 1024 ? `${stats.sizeKB} KB` : `${(stats.sizeKB / 1024).toFixed(1)} MB`, Icon: HardDrive, color: "text-cyan-400", dot: "bg-cyan-500" },
+    { title: "Latest Upload", value: stats.latest, Icon: Clock, color: "text-amber-400", dot: "bg-amber-500" },
+  ];
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden text-white selection:bg-indigo-500/30 font-[family-name:var(--font-geist-sans)]">
@@ -27,8 +75,8 @@ export default function DashboardPage() {
       <div className="w-full max-w-4xl px-6 py-20">
         <header className="mb-12 flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold tracking-tight">Main Dashboard</h1>
-            <p className="mt-2 text-zinc-400">Welcome back to your mastery center.</p>
+            <h1 className="text-4xl font-bold tracking-tight">My Gallery</h1>
+            <p className="mt-2 text-zinc-400">Your personal photo collection.</p>
           </div>
           <button
             onClick={handleLogout}
@@ -39,11 +87,7 @@ export default function DashboardPage() {
         </header>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { title: "Personal Progress", value: "85%", Icon: BarChart3, color: "text-blue-400", dot: "bg-blue-500" },
-            { title: "Completed Tasks", value: "12", Icon: CheckSquare, color: "text-green-400", dot: "bg-green-500" },
-            { title: "Achievement Points", value: "1,240", Icon: Trophy, color: "text-purple-400", dot: "bg-purple-500" },
-          ].map((stat, i) => (
+          {statCards.map((stat, i) => (
             <div key={i} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition-all hover:bg-white/10">
               <div className="flex items-center justify-between mb-4">
                 <stat.Icon className={`h-8 w-8 ${stat.color}`} />
@@ -55,29 +99,10 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-          <div className="flex items-center gap-2 mb-4">
-            <Activity className="h-5 w-5 text-indigo-400" />
-            <h2 className="text-xl font-semibold">Recent Activity</h2>
-          </div>
-          <div className="space-y-4">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-full bg-indigo-600/20 flex items-center justify-center overflow-hidden">
-                    <img src="/profile-bg.jpg" className="w-full h-full object-cover" alt="User" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Logged in successfully</p>
-                    <p className="text-xs text-zinc-500">Just now</p>
-                  </div>
-                </div>
-                <span className="text-xs font-semibold text-indigo-400">Success</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Photo Gallery Section */}
+        <PhotoGallery onGalleryChange={handleGalleryChange} />
       </div>
     </div>
   );
 }
+
