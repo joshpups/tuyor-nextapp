@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const router = useRouter();
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -23,7 +26,7 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      alert("Login bypass - Validation Successful!");
+      router.push("/dashboard");
     }
   };
 

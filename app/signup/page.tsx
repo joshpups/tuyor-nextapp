@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -9,6 +10,8 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const router = useRouter();
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -31,7 +34,7 @@ export default function SignupPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      alert("Registration bypass - Account Created Successfully!");
+      router.push("/dashboard");
     }
   };
 
