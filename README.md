@@ -1,4 +1,4 @@
-# Next.js Mastery: tuyor-nextapp
+# Next.js Mastery: loremia-nextapp
 
 A premium Next.js 16 application initialized with the latest App Router, React 19, and Tailwind CSS 4. This project serves as a showcase for modern web development workflows and GitHub version control.
 
@@ -20,7 +20,7 @@ A premium Next.js 16 application initialized with the latest App Router, React 1
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/joshpups/tuyor-nextapp.git
+   git clone https://github.com/joshpups/loremia-nextapp.git
    ```
 2. Install dependencies:
    ```bash
